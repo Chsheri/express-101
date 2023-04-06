@@ -92,7 +92,28 @@ const findTodo = (req, res) => {
 };
 
 const updateTodo = (req, res) => {
-  return;
+  const id = req.params.id;
+  const body = req.body;
+
+  let found = todos.findEntry(id);
+  if (found.err) {
+    return res.status(500).send({
+      msg: "The id you provided doesn't exist yet. Create the entry instead.",
+      err: "BADREQUEST",
+    });
+  }
+  const allItems = todos.getAll();
+  const indexOfFound = allItems.indexOf(found);
+  const [deleted] = allItems.splice(indexOfFound, 1, {
+    ...found,
+    ...req.body,
+    updatedAt: Date.now(),
+  });
+
+  return res.status(200).send({
+    msg: `The entry with id ${id} has been updated now.`,
+    data: deleted,
+  });
 };
 
 module.exports = { createTodo, deleteTodo, getAllTodos, findTodo, updateTodo };
