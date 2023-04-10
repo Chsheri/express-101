@@ -2,6 +2,7 @@ const PORT = 3333; // Define the port
 
 const express = require("express"); // import express lib from node_modules
 const bodyParser = require("body-parser"); // import body-parser from node_modules
+const cors = require("cors");
 const initServer = require("./lib/initServer"); // Server Listening function
 
 const {
@@ -14,6 +15,7 @@ const {
 
 const app = express(); // app object that is returned in response to executing the express lib
 
+app.use(cors());
 app.use(express.json()); // We used express's json parser middleware
 app.use(bodyParser.urlencoded({ extended: false })); // We used bodyParser's encoding middleware
 
